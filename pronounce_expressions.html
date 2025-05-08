@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Pronounce TOEFL Expressions</title>
+  <title>Native Pronunciation</title>
   <style>
     body { font-family: sans-serif; max-width: 400px; margin: 2em auto; text-align: center; }
-    select, button { font-size: 1em; padding: 0.5em; margin-top: 1em; }
+    select, button { font-size: 1em; padding: 0.5em; margin: 0.5em; }
   </style>
 </head>
 <body>
-  <h1>TOEFL Expressions Pronunciation</h1>
-  <p>Select an expression and click the speaker icon to hear it.</p>
+  <h1>TOEFL Expressions ▶︎ Native Voice</h1>
+  
+  <label for="expression">Expression:</label><br>
   <select id="expression">
     <option value="hold true">hold true</option>
     <option value="draw attention to">draw attention to</option>
@@ -18,14 +19,38 @@
     <option value="stand out">stand out</option>
     <option value="rule out">rule out</option>
   </select>
+  
+  <br>
+  <label for="voiceSelect">Voice:</label><br>
+  <select id="voiceSelect"></select>
+  
   <br>
   <button onclick="speak()">🔈 Pronounce</button>
 
   <script>
+    const synth = window.speechSynthesis;
+
+    function populateVoices() {
+      const voices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+      const select = document.getElementById('voiceSelect');
+      select.innerHTML = '';
+      voices.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.textContent = `${v.name} (${v.lang})`;
+        select.appendChild(opt);
+      });
+    }
+
+    // voiceschanged 이벤트로 가능한 음성 목록을 가져옴
+    synth.onvoiceschanged = populateVoices;
+
     function speak() {
       const text = document.getElementById('expression').value;
       const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
+      const selectedName = document.getElementById('voiceSelect').value;
+      utterance.voice = synth.getVoices().find(v => v.name === selectedName);
+      synth.speak(utterance);
     }
   </script>
 </body>
