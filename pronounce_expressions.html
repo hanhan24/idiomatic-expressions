@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pronounce TOEFL Expressions</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 2em auto; text-align: center; }
+    select, button { font-size: 1em; padding: 0.5em; margin-top: 1em; }
+  </style>
+</head>
+<body>
+  <h1>TOEFL Expressions Pronunciation</h1>
+  <p>Select an expression and click the speaker icon to hear it.</p>
+  <select id="expression">
+    <option value="hold true">hold true</option>
+    <option value="draw attention to">draw attention to</option>
+    <option value="put into practice">put into practice</option>
+    <option value="stand out">stand out</option>
+    <option value="rule out">rule out</option>
+  </select>
+  <br>
+  <button onclick="speak()">🔈 Pronounce</button>
+
+  <script>
+    function speak() {
+      const text = document.getElementById('expression').value;
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
